@@ -1,0 +1,246 @@
+//Basic array operation for comparision of time complexity
+//driver code can perfoam  insert, search, findMin, deleteMin, display operation
+
+
+package com.Java_hackerrank.test;
+
+import java.util.Scanner;
+
+enum Operation {
+	insert, search, findMin, deleteMin, display
+}
+
+public class ArrayOperation {
+
+	static Operation choice;
+	static Scanner scn = new Scanner(System.in);
+
+	public static void unsortedArrayOp(int arr[], String opt) {
+
+		choice = Operation.valueOf(opt);
+		int len = arr.length - 1;
+
+		switch (choice) {
+
+		case display:
+
+			System.out.println("Array Element: ");
+			show(arr);
+			break;
+
+		case insert:
+
+			insertElement(arr, len);
+			break;
+
+		case search:
+
+			searchElement(arr, len);
+			break;
+
+		case findMin:
+
+			int minINdex = findMin(arr, len);
+			System.out.println("Minimum element in list: " + arr[minINdex]);
+			break;
+
+		case deleteMin:
+
+			deleteMin(arr, len);
+			break;
+
+		default:
+			System.out.println("Please correct your operation & Try again!");
+		}
+
+	}
+
+	public static void sortedArrayOp(int arr[], String op) {
+
+		choice = Operation.valueOf(op);
+		int len = arr.length - 1;
+
+		switch (choice) {
+
+		case display:
+			show(arr);
+			break;
+
+		case insert:
+			insertElement(arr, len);
+			break;
+
+		case search:
+
+			int low = 0, high = len, num, flag = 0;
+
+			System.out.println("Enter number to be searched in sorted array: ");
+			num = scn.nextInt();
+
+			while (low <= high) {
+
+				int mid = low + (high - low) / 2;
+
+				if (arr[mid] == num) {
+
+					System.out.println("Element found at index: " + (mid + 1));
+					flag = 1;
+					break;
+				} else if (arr[mid] > num) {
+					high = mid - 1;
+				} else {
+					low = mid + 1;
+				}
+
+			}
+			if (flag == 0)
+				System.out.println("Element is not present in array");
+
+			break;
+
+		case findMin:
+
+			System.out.println("Minimum element is: " + arr[0]);
+			break;
+
+		case deleteMin:
+
+			int arr1[] = new int[len];
+			for (int i = 1, k = 0; i <= len; i++) {
+				arr1[k++] = arr[i];
+			}
+			arr = arr1;
+			arr1 = null;
+			System.out.println("\nAfter deleting min element from sorted array: ");
+			show(arr);
+			break;
+
+		default:
+			System.out.println("PLease coorect your choice & try again!");
+
+		}
+
+	}
+
+//driver code
+
+	public static void main(String[] args) {
+
+		// insert, search, findMin, deleteMin, display
+
+		int[] arr = { 58, 5, 3, 7, 8, 9, 12, 14, 15, 17 };
+
+		int[] sortedArr = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+
+		unsortedArrayOp(arr, "display");
+
+		// unsortedArrayOp(arr, "search");
+
+		// unsortedArrayOp(arr,"findMin");
+		// unsortedArrayOp(arr,"deleteMin");
+
+		// unsortedArrayOp(arr,"display");
+
+		sortedArrayOp(sortedArr, "display");
+		// sortedArrayOp(sortedArr,"search");
+		// sortedArrayOp(sortedArr,"findMin");
+		// sortedArrayOp(sortedArr,"deleteMin");
+
+	}
+
+	static void show(int arr[]) {
+
+		for (int i : arr) {
+
+			System.out.print(i + " ");
+
+		}
+		System.out.println();
+	}
+
+	static int findMin(int arr[], int len) {
+
+		int min = arr[0];
+		int index = 0;
+
+		for (int i = 1; i <= len; i++) {
+
+			if (min > arr[i]) {
+
+				min = arr[i];
+				index = i;
+
+			}
+		}
+
+		return index;
+	}
+
+	static void insertElement(int[] arr, int len) {
+
+		int num, index;
+		int arrTemp[] = new int[len + 1];
+
+		System.out.println("Enter index and element to be inserted: ");
+
+		index = scn.nextInt();
+		num = scn.nextInt();
+
+		for (int i = 0; i <= len; i++) {
+
+			if (i < index - 1) {
+				arrTemp[i] = arr[i];
+			} else if (i == index - 1) {
+				arrTemp[i] = num;
+			} else {
+				arrTemp[i] = arr[i];
+			}
+		}
+		arr = arrTemp;
+		arrTemp = null;
+
+	}
+
+	static void searchElement(int[] arr, int len) {
+
+		System.out.println("Enter element to be searched: ");
+		int num = scn.nextInt();
+		boolean flag = false;
+		int searchIndex = 0;
+
+		for (int i = 0; i <= len; i++) {
+
+			if (num == arr[i]) {
+				flag = true;
+				searchIndex = i;
+				break;
+			}
+
+		}
+		if (flag) {
+			System.out.println("Element found at index: " + (searchIndex + 1));
+		} else
+			System.out.println("Element not found in the list");
+
+	}
+
+	static void deleteMin(int[] arr, int len) {
+
+		int index = findMin(arr, len);
+
+		int arr1[] = new int[len];
+
+		for (int i = 0, k = 0; i <= len; i++) {
+
+			if (i == index) {
+				continue;
+			}
+			arr1[k++] = arr[i];
+		}
+		arr = arr1;
+		arr1 = null;
+		System.out.println("Array after deleting number");
+		show(arr);
+	}
+
+}
